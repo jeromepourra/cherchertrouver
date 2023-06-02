@@ -1,0 +1,6 @@
+**/ionos
+**/upload/annonces
+**/upload/avatars
+*.sql
+*.txt
+**/Mailer.php
