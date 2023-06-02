@@ -11,17 +11,17 @@ class Model {
     private $sUserPassword;
     private $sCharset = "utf8";
 
-    private const HOST_LOCAL = "localhost";
-    private const PORT_LOCAL = 3306;
-    private const NAME_LOCAL = "cherchertrouver";
-    private const USERNAME_LOCAL = "root";
+    private const HOST_LOCAL = "";
+    private const PORT_LOCAL = -1;
+    private const NAME_LOCAL = "";
+    private const USERNAME_LOCAL = "";
     private const USERPASSWORD_LOCAL = "";
 
-    private const HOST_ONLINE = "db5012679466.hosting-data.io";
-    private const PORT_ONLINE = 3306;
-    private const NAME_ONLINE = "dbs10652465";
-    private const USERNAME_ONLINE = "dbu968225";
-    private const USERPASSWORD_ONLINE = "kXHPkhIih4kaY4r2VIIVhQhlOc9wj6";
+    private const HOST_ONLINE = "";
+    private const PORT_ONLINE = -1;
+    private const NAME_ONLINE = "";
+    private const USERNAME_ONLINE = "";
+    private const USERPASSWORD_ONLINE = "";
 
     private PDO $db;
     private $table;
