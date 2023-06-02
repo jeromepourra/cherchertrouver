@@ -1,7 +1,7 @@
 **/ionos
 **/upload/annonces/**
 **/upload/avatars/**
-*.sql
-*.txt
-core/model/Model.php
-mailer/Mailer.php
+**/*.sql
+**/*.txt
+**/core/model/Model.php
+**/mailer/Mailer.php
