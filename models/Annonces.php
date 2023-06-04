@@ -50,11 +50,15 @@ class Annonces extends Model {
         }
         
         $sCondition = join(" AND ", $aCondition);
+        
+        // récupère le total de toutes les annonces
         $aCount = $this->readJoin("users", "users._id = annonces.user_id", "COUNT(*)", $sCondition, $sOrder, $aBind, "fetch", PDO::FETCH_NUM);
+        // transforme la string retourné en un entier
         $nCount = (int) $aCount[0];
 
         return [
             "count" => $nCount,
+            // récupère les annonces à afficher sur la page
             "annonces" => $this->readJoinPaginate("users", "users._id = annonces.user_id", "annonces.*", $sCondition, $sOrder, $sLimit, $sOffset, $aBind)
         ];
 

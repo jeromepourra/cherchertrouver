@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use AnnonceState;
 use Constants;
 use Controller;
 use Forms\MessageSendForm;
@@ -74,11 +75,13 @@ class ConversationCreate extends Controller {
         $this->setConversationData($aAnnonce, $aUser);
 
         $this->messageSendForm = $this->loadForm("MessageSendForm");
+        // vérification du champ message du formulaire
         $bFormSuccess = $this->messageSendForm->check();
         $aFormResponse = $this->messageSendForm->getResponse();
 
         if ($bFormSuccess) {
 
+            // création de la conversation en base de données
             $aConversation = $this->conversationsModel->create([
                 $aAnnonce["_id"],
                 Session::userGetId(),
@@ -87,6 +90,7 @@ class ConversationCreate extends Controller {
                 Session::userGetId()
             ]);
 
+            // création du message envoyé dans la base de données
             $this->messagesModel->create([
                 $aConversation["_id"],
                 Session::userGetId(),
@@ -111,15 +115,22 @@ class ConversationCreate extends Controller {
 
     private function setConversationData(&$aAnnonce, &$aUser) {
 
+        // la clef primaire de l'annonce provenant de l'URL
         $sAnnonceAction = $this->actions[0];
+        // l'annonce récuperer en base de données
         $aAnnonce = $this->annoncesModel->getFromId($sAnnonceAction);
 
-        if (!empty($aAnnonce)) {
+        // si l'annonce existe et que son statut est en ligne, alors
+        if (!empty($aAnnonce) && $aAnnonce["state"] == AnnonceState::ANNONCE_STATE_ONLINE) {
 
+            // récupérer l'utilisateur en base de données
             $aUser = $this->usersModel->getFromId($aAnnonce["user_id"]);
 
+            // si l'utilisateur existe et qu'il n'est pas l'utilisateur connecté
+            // et qu'il n'est pas banni, alors
             if (!empty($aUser) && $aUser["_id"] != Session::userGetId() && !$aUser["banned"]) {
 
+                // prépare la data à envoyé à la view
                 $this->data->set([
                     "conversation" => ["annonce" => $aAnnonce, "user" => $aUser]
                 ]);

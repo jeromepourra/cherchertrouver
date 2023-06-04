@@ -23,7 +23,7 @@ $sWithPseudo = FrontData::$data->get("conversation", "with-user", "pseudo");
                 <li class="list-group-item p-3 <?= $sGroupColor ?> <?= $bUnreaded ? "position-relative" : "" ?>">
                     <div class="row mb-2">
                         <div class="col-12 col-sm-6 order-sm-2">
-                            <small class="d-block text-sm-end text-muted fs-14"><?= DateFormat::format($aConversation["conversation"]["last_message_date"]) ?></small>
+                            <small class="d-block text-sm-end text-muted fs-14"><?= DateFormat::format($aMessage["date"]) ?></small>
                         </div>
                         <div class="col-12 col-sm-6 order-sm-1">
                             <?php if ($bOwner) : ?>

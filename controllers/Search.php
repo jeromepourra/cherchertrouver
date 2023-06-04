@@ -141,12 +141,18 @@ class Search extends Controller {
             $this->on404();
         }
 
+        // défini le nombre de résultat max de la requête
         $nLimit = Constants::ANNONCE_MAX_PER_PAGE;
+        // défini le décalage des résultat
         $nOffset = Constants::ANNONCE_MAX_PER_PAGE * ($nActionPage - 1);
 
+        // si l'option de tri est défini, alors
         if (isset($this->query["sort"])) {
             switch ($this->query["sort"]) {
                 case "categorie":
+                    // récupère le résultat de la requête
+                    // $aResearch = le tableau de condition des champs du formulaire
+                    // category_id ASC = redéfini l'ordre des résultats obtenu
                     $aResults = $this->annoncesModel->getFromResearch($aResearch, "category_id ASC", $nLimit, $nOffset);
                     break;
                 case "recent":
@@ -155,6 +161,7 @@ class Search extends Controller {
                 case "ancien";
                     $aResults = $this->annoncesModel->getFromResearch($aResearch, "date ASC", $nLimit, $nOffset);
                     break;
+                    // etc...
                 case "prixcroissant":
                     $aResults = $this->annoncesModel->getFromResearch($aResearch, "price ASC", $nLimit, $nOffset);
                     break;
@@ -182,10 +189,15 @@ class Search extends Controller {
 
     private function setResultsData($nCount) {
 
+        // total de toutes les annonces
         $nTotResults = $nCount;
+        // total de toutes les pages
         $nTotPages = (int) ceil($nTotResults / Constants::ANNONCE_MAX_PER_PAGE);
+        // si total aucune annonces n'est trouvé alors le total des page est égal à 0
+        // définir à 1 par defaut
         $nTotPages = $nTotPages < 1 ? 1 : $nTotPages;
 
+        // prépare les données qui seront envoyé à la view
         $this->data->set([
             "annonce" => [
                 "total-annonces" => $nTotResults,
@@ -196,15 +208,21 @@ class Search extends Controller {
 
     private function setAnnoncesData($aAnnonces) {
 
+        // défini un tableau vide qui sera envoyé à la view
         $aAnnoncesData = [];
 
         foreach ($aAnnonces as $aAnnonce) {
+            // recupère le propriétaire de l'annonce
             $aUser = $this->userModel->getFromId($aAnnonce["user_id"]);
+            // recupère la categorie de l'annonce
             $aCategoryModel = $this->categoriesModel->getFromId($aAnnonce["category_id"]);
+            // recupère la première image de l'annonce
             $aAnnoncesPictureModel = $this->annoncesPicturesModel->getOneFromAnnonce($aAnnonce["_id"]);
+            // ajoute toutes les données de l'annonce dans le tableau qui sera envoyé à la view
             array_push($aAnnoncesData, ["user" => $aUser, "annonce" => $aAnnonce, "picture" => $aAnnoncesPictureModel, "category" => $aCategoryModel["name"]]);
         }
 
+        // prépare les données des annonces qui seront envoyé à la view
         $this->data->set([
             "annonce" => [
                 "annonces" => $aAnnoncesData

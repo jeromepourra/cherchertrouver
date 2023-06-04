@@ -81,7 +81,7 @@ $aAnnonce = FrontData::$data->get("annonce", "annonce");
                             <i class="fa-solid fa-phone"></i> <?= NumberFormat::formatPhone($aUser["phone"]) ?>
                         </a>
                     </p>
-                    <button class="btn btn-sm btn-primary mb-3 <?= $bOwner || $aUser["banned"] ? "disabled" : "" ?>">
+                    <button class="btn btn-sm btn-primary <?= $bOwner || $aUser["banned"] ? "disabled" : "" ?>">
                         <a class="link-light text-decoration-none" href="<?= RouterDictionnary::buildURL("ConversationCreate", [$aAnnonce["annonce"]["_id"]]) ?>">
                             <i class="fa-solid fa-globe"></i> Envoyer un message
                         </a>
